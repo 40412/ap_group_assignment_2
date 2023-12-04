@@ -26,4 +26,10 @@ def recipe_detail(request, recipe_id):
 # Add to favorites view
 # User favorite recipes
 def testview(request):
-    return render(request, 'recipe_app/test.html')
+    recipes = Recipe.objects.all()
+
+    for recipe in recipes:
+        print(recipe.ingredients.all())
+
+    context = {'recipes': recipes}
+    return render(request, 'recipe_app/test.html', context)

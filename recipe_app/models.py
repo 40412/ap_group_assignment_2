@@ -14,10 +14,14 @@ class Recipe(models.Model):
                                           
     
 class Ingredients(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.DO_NOTHING,related_name='Ingredients')
+    recipe = models.ForeignKey(Recipe, on_delete=models.DO_NOTHING, related_name='ingredients')
     ingredient = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=7, decimal_places=1)
     unit = models.CharField(max_length=10)
+
+    def __str__(self):
+        """Returns a string representation of the model"""
+        return f"{self.ingredient} {self.amount} {self.unit}"
 
 class Favorites(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)

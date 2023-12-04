@@ -1,1 +1,16 @@
+<!DOCTYPE html>
+
 Hi, this is test
+<div>
+    <ul>
+        {% for recipe in recipes %}
+        <h2>{{recipe.title}}</h2>
+
+        {% for ing in recipe.ingredients.all %}
+        <li>{{ing.ingredient}} {{ing.amount}} {{ing.unit}}</li>
+        {% endfor %}
+
+        {% empty %}
+        <p>No recipes</p>
+        {% endfor %}
+</div>
