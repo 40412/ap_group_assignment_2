@@ -24,7 +24,6 @@ def recipe_detail(request, recipe_id):
 
 # Add recipe view
 def add_recipe(request):
-    return #remove when forms done
     if request.method != 'POST':
         recipe_form = RecipeForm()
         return None
@@ -40,7 +39,6 @@ def add_recipe(request):
 
 # Edit recipe view
 def edit_recipe(request, recipe_id):
-    return #remove when forms and accounts done
     #EDIT INGREDIENTS WHERE?
     check_owner(recipe.owner, request.user)
     recipe = Recipe.objects.get(id=recipe_id)
@@ -56,7 +54,6 @@ def edit_recipe(request, recipe_id):
 
 # Add rating view
 def add_rating(request, recipe_id):
-    return #remove when forms done
     recipe = Recipe.objects.get(id=recipe_id)
     if request.method != 'POST':
         form = RatingForm()
