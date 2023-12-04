@@ -9,6 +9,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=100)
     instructions = models.TextField()
     portions = models.IntegerField()
+    image = models.ImageField(upload_to='pics', null=True)
     date_added = models.DateTimeField(auto_now_add=True, editable=False, null=True) #date_added and date_modified are read-only
     date_modified = models.DateTimeField(auto_now=True, editable=False) #and handled by the system
                                           

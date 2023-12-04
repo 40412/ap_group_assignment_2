@@ -27,9 +27,5 @@ def recipe_detail(request, recipe_id):
 # User favorite recipes
 def testview(request):
     recipes = Recipe.objects.all()
-
-    for recipe in recipes:
-        print(recipe.ingredients.all())
-
     context = {'recipes': recipes}
     return render(request, 'recipe_app/test.html', context)

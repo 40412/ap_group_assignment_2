@@ -5,6 +5,8 @@ Hi, this is test
     <ul>
         {% for recipe in recipes %}
         <h2>{{recipe.title}}</h2>
+        
+        <img src="{{ recipe.image.url }}" width="300" height="250">
 
         {% for ing in recipe.ingredients.all %}
         <li>{{ing.ingredient}} {{ing.amount}} {{ing.unit}}</li>
