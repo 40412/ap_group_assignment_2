@@ -7,6 +7,11 @@ Windows: ap_env/Scripts/activate
 Superuser account: AppAdmin  
 Password: admiN356  
 
+Additional installations:  
+
+### Pillow  
+pip install pillow  
+
 ## Using repository
 
 Clone the repository and make changes to dev-branch. Stable code will be merged to main by creating a pull request.  
