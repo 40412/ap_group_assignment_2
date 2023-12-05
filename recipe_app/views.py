@@ -26,7 +26,6 @@ def recipe_detail(request, recipe_id):
 def add_recipe(request):
     if request.method != 'POST':
         recipe_form = RecipeForm()
-        return None
     else:
         recipe_form = RecipeForm(data=request.POST)
         if recipe_form.is_valid():
@@ -45,7 +44,7 @@ def edit_recipe(request, recipe_id):
     if request.method != 'POST':
         form = RecipeForm(instance = recipe)
     else:
-        form = RecipeForm(instance = review, data=request.POST)
+        form = RecipeForm(instance = recipe, data=request.POST)
         if form.is_valid():
             form.save()
             return redirect('') #redirect to appropriate url
