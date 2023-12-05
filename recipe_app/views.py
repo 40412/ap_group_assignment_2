@@ -19,7 +19,11 @@ def recipe_detail(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
     ingredients = recipe.ingredients.all()
     ratings = recipe.ratings.all()
-    context = {'recipe':recipe, 'ingredients':ingredients, 'ratings':ratings}
+    instructions = recipe.instructions
+    context = {'recipe':recipe, 
+               'ingredients':ingredients, 
+               'ratings':ratings, 
+               'instructions': instructions}
     return render(request, 'recipe_app/recipe_detail.html', context)
 
 # Add recipe view

@@ -1,3 +1,14 @@
 all recipes
 <p>This file has been added just to test views and urls</p>
 <p>Feel free to use this file or delete it as you create your own</p>
+<div>
+    <ul>
+        {% for recipe in recipes %}
+        <h2>{{recipe.title}}</h2>
+        
+        <img src="{{ recipe.image.url }}" width="200" height="150">
+
+        {% empty %}
+        <p>No recipes</p>
+        {% endfor %}
+</div>

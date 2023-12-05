@@ -1,3 +1,27 @@
-recipe details
-<p>This file has been added just to test views and urls</p>
-<p>Feel free to use this file or delete it as you create your own</p>
+<h2>{{recipe.title}}</h2>
+<img src="{{ recipe.image.url }}" width="300" height="250">
+<div>
+    <h3>Raaka-aineet</h3>
+    <ul>
+        {% for ingredient in recipe.ingredients.all%}
+        <li>{{ingredient}}</li>
+        {% empty %}
+        Ei raaka-aineita
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <h3>Valmistusohjeet</h3>
+    {{recipe.instructions}}
+
+    <h3>Arvostelut</h3>
+    {% for rating in recipe.ratings.all %}
+    <div>
+        <p>{{rating.score}}</p>
+        <strong>{{rating.title}}</strong>             
+        <p>{{rating.comment}}</p>
+        {% empty %}
+        No ratings
+        {% endfor %}
+    </div>
+</div>
