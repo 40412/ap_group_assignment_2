@@ -12,3 +12,6 @@ class RatingForm(forms.ModelForm):
         model = Rating
         fields = ["title","score","comment"]
         labels = {"title":"Title","score":"Score","comment":"Comment"}
+
+class SearchForm(forms.Form):
+    query = forms.CharField()

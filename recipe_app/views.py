@@ -2,13 +2,20 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Recipe, Ingredients, Favorites, Rating
 from django.http import Http404
-from .forms import RecipeForm, RatingForm
+from .forms import RecipeForm, RatingForm, SearchForm
 
 # Create your views here.
 
 # Main page
 def index(request):
-    return render(request, 'recipe_app/index.html')
+    form = SearchForm(request.GET)
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        results = Recipe.objects.filter(title__icontains=query)
+    else:
+        results = Recipe.objects.none()
+    context = {'form': form, 'results': results}
+    return render(request, 'recipe_app/index.html', context)
 
 # Display all recipes
 def recipes(request): # + sort type

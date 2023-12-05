@@ -5,3 +5,12 @@
     Rekisteröidy
 </div>
 <h1>Tervetuloa kokeilemaan maailman parhaita reseptejä!</h1>
+
+<form method="get" action="{% url 'recipe_app:index' %}">
+    {{ form.query }}
+    <button type="submit">Etsi reseptejä</button>
+</form>
+
+{% for result in results %}
+    <p>{{ result.title }}</p>
+{% endfor %}
