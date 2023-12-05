@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Recipe, Ingredients, Favorites, Rating
 from django.http import Http404
+from .forms import RecipeForm, RatingForm
+
 # Create your views here.
 
 # Main page
