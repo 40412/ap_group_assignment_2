@@ -1,1 +1,16 @@
-Index
+<div>
+    <a href="{% url 'recipe_app:index' %}">MestariKokit</a>
+    <a href="{% url 'recipe_app:recipes' %}">Reseptit</a>
+    Kirjaudu
+    Rekisteröidy
+</div>
+<h1>Tervetuloa kokeilemaan maailman parhaita reseptejä!</h1>
+
+<form method="get" action="{% url 'recipe_app:index' %}">
+    {{ form.query }}
+    <button type="submit">Etsi reseptejä</button>
+</form>
+
+{% for result in results %}
+    <p>{{ result.title }}</p>
+{% endfor %}

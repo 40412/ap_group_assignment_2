@@ -1,11 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Recipe, Ingredients, Favorites, Rating
+from django.http import Http404
+from .forms import RecipeForm, RatingForm, SearchForm
+
 # Create your views here.
 
 # Main page
 def index(request):
-    return render(request, 'recipe_app/index.html')
+    form = SearchForm(request.GET)
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        results = Recipe.objects.filter(title__icontains=query)
+    else:
+        results = Recipe.objects.none()
+    context = {'form': form, 'results': results}
+    return render(request, 'recipe_app/index.html', context)
 
 # Display all recipes
 def recipes(request): # + sort type
@@ -16,16 +26,66 @@ def recipes(request): # + sort type
 # Detailed recipe view
 def recipe_detail(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
-    ingredients = recipe.Ingredients.get()
+    ingredients = recipe.ingredients.all()
     ratings = recipe.ratings.all()
-    context = {'recipe':recipe, 'ingredients':ingredients, 'ratings':ratings}
+    instructions = recipe.instructions
+    context = {'recipe':recipe, 
+               'ingredients':ingredients, 
+               'ratings':ratings, 
+               'instructions': instructions}
     return render(request, 'recipe_app/recipe_detail.html', context)
+
 # Add recipe view
+def add_recipe(request):
+    if request.method != 'POST':
+        recipe_form = RecipeForm()
+    else:
+        recipe_form = RecipeForm(data=request.POST)
+        if recipe_form.is_valid():
+            new_recipe = recipe_form.save(commit=False)
+            new_recipe.owner = request.user
+            new_recipe.save()
+            return redirect('') #redirect to appropriate url
+    context = {'form':recipe_form}
+    return render(request,'recipe_app/add_recipe.html',context)
+
 # Edit recipe view
+def edit_recipe(request, recipe_id):
+    #EDIT INGREDIENTS WHERE?
+    check_owner(recipe.owner, request.user)
+    recipe = Recipe.objects.get(id=recipe_id)
+    if request.method != 'POST':
+        form = RecipeForm(instance = recipe)
+    else:
+        form = RecipeForm(instance = recipe, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('') #redirect to appropriate url
+    context = {'recipe':recipe, 'form':form}
+    return render(request,'recipe_app/edit_recipe.html',context)
+
 # Add rating view
+def add_rating(request, recipe_id):
+    recipe = Recipe.objects.get(id=recipe_id)
+    if request.method != 'POST':
+        form = RatingForm()
+    else:
+        form = RatingForm(data=request.POST)
+        if form.is_valid():
+            new_recipe = form.save(commit=False)
+            new_recipe.recipe = recipe
+            new_recipe.save()
+            return redirect('recipe_app:recipe',recipe_id=recipe_id)
+    context = {'recipe':recipe,'form':form}
+    return render(request,'recipe_app/add_rating.html',context)
+
 # Add to favorites view
 # User favorite recipes
 def testview(request):
     recipes = Recipe.objects.all()
     context = {'recipes': recipes}
     return render(request, 'recipe_app/test.html', context)
+
+def check_owner(owner, user):
+    if owner != user:
+        raise Http404

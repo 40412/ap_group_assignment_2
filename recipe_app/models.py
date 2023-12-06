@@ -30,6 +30,7 @@ class Favorites(models.Model):
 
 class Rating(models.Model):
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='ratings')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ratings')
     title = models.CharField(max_length=100)
     score = models.IntegerField(validators=[MaxValueValidator(5)])
     comment = models.TextField(blank=True)
