@@ -1,8 +1,18 @@
 <div>
     <a href="{% url 'recipe_app:index' %}">MestariKokit</a>
     <a href="{% url 'recipe_app:recipes' %}">Reseptit</a>
-    Kirjaudu
-    Rekisteröidy
+
+    {% if user.is_authenticated %}
+    <hr />
+    <form action="{% url 'accounts:logout' %}" method='post'>
+        {% csrf_token %}
+        <button name='submit'>Kirjaudu ulos</button>
+    </form>
+    {{ user.username }}
+    {% else %}
+    <a href="{% url 'accounts:login' %}">Kirjaudu</a>
+    <a href="{% url 'accounts:register' %}">Rekisteröidy</a>
+    {% endif %}
 </div>
 <h1>Tervetuloa kokeilemaan maailman parhaita reseptejä!</h1>
 
