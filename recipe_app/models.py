@@ -10,6 +10,7 @@ class Recipe(models.Model):
     instructions = models.TextField()
     portions = models.IntegerField()
     image = models.ImageField(upload_to='pics', null=True)
+    favorited_by = models.ManyToManyField(User, related_name='favorites', blank=True)
     date_added = models.DateTimeField(auto_now_add=True, editable=False, null=True) #date_added and date_modified are read-only
     date_modified = models.DateTimeField(auto_now=True, editable=False) #and handled by the system
                                           
@@ -26,7 +27,7 @@ class Ingredients(models.Model):
 
 class Favorites(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite')
 
 class Rating(models.Model):
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='ratings')

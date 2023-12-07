@@ -3,6 +3,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Recipe, Ingredients, Favorites, Rating
 from django.http import Http404
 from .forms import RecipeForm, RatingForm, SearchForm
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+
 
 # Create your views here.
 
@@ -26,6 +29,7 @@ def recipes(request): # + sort type
 # Detailed recipe view
 def recipe_detail(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
+
     ingredients = recipe.ingredients.all()
     ratings = recipe.ratings.all()
     instructions = recipe.instructions
@@ -34,6 +38,17 @@ def recipe_detail(request, recipe_id):
                'ratings':ratings, 
                'instructions': instructions}
     return render(request, 'recipe_app/recipe_detail.html', context)
+
+# Handles the favorite button toggle
+def toggle_favorite(request, recipe_id):
+    if request.user.is_authenticated:
+        recipe = get_object_or_404(Recipe, id=recipe_id)
+        if request.user in recipe.favorited_by.all():
+            recipe.favorited_by.remove(request.user)
+        else:
+            recipe.favorited_by.add(request.user)
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 # Add recipe view
 def add_recipe(request):
@@ -79,10 +94,12 @@ def add_rating(request, recipe_id):
     context = {'recipe':recipe,'form':form}
     return render(request,'recipe_app/add_rating.html',context)
 
+# User profile
 def profile(request):
     user = request.user
     favorites = user.favorites.all()
     form = RecipeForm()
+    context = {'user': user, 'favorites': favorites}
     return render(request, 'recipe_app/profile.html')
 
 # Add to favorites view

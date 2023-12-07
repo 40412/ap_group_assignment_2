@@ -1,9 +1,19 @@
 <h2>{{recipe.title}}</h2>
 <img src="{{ recipe.image.url }}" width="300" height="250">
 <div>
+    <div>
+        <button class="favorite-toggle" data-recipe-id="{{ recipe.id }}">
+            {% if user in recipe.favorited_by.all %}
+            Remove from Favorites
+            {% else %}
+            Add to Favorites
+            {% endif %}
+        </button>
+    </div>
+
     <h3>Raaka-aineet</h3>
     <ul>
-        {% for ingredient in recipe.ingredients.all%}
+        {% for ingredient in recipe.ingredients.all %}
         <li>{{ingredient}}</li>
         {% empty %}
         Ei raaka-aineita
@@ -25,6 +35,46 @@
         {% endfor %}
     </div>
 </div>
+
+{% comment %} JavaScript to handle the favorite button {% endcomment %}
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    document.querySelectorAll('.favorite-toggle').forEach(button => {
+        button.addEventListener('click', function() {
+            const recipeId = this.dataset.recipeId;
+            fetch(`/toggle-favorite/${recipeId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'), 
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({'recipe_id': recipeId})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.textContent = this.textContent.includes('Add') ? 'Remove from Favorites' : 'Add to Favorites';
+                }
+            });
+        });
+    });
+    
+</script>
 
 <strong style="background-color:Tomato;">Annosmäärä
     laskuri, arvostelujen keskiarvo</strong>
