@@ -8,7 +8,7 @@
         {% csrf_token %}
         <button name='submit'>Kirjaudu ulos</button>
     </form>
-    {{ user.username }}
+    <a href="{% url 'recipe_app:profile' %}">{{ user.username }}</a> 
     {% else %}
     <a href="{% url 'accounts:login' %}">Kirjaudu</a>
     <a href="{% url 'accounts:register' %}">Rekisteröidy</a>
@@ -24,3 +24,4 @@
 {% for result in results %}
     <p>{{ result.title }}</p>
 {% endfor %}
+<strong style="background-color:Tomato;"> Linkit hakutuloksiin</strong>
