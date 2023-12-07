@@ -1,5 +1,5 @@
 from django import forms
-from .models import Recipe,Rating
+from .models import Recipe,Rating, Ingredients
 
 class RecipeForm(forms.ModelForm):
     class Meta:
@@ -15,3 +15,8 @@ class RatingForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     query = forms.CharField()
+
+class IngredientForm(forms.ModelForm):
+    class Meta:
+        model = Ingredients
+        fields = ['ingredient', 'amount', 'unit']

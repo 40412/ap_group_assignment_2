@@ -79,6 +79,12 @@ def add_rating(request, recipe_id):
     context = {'recipe':recipe,'form':form}
     return render(request,'recipe_app/add_rating.html',context)
 
+def profile(request):
+    user = request.user
+    favorites = user.favorites.all()
+    form = RecipeForm()
+    return render(request, 'recipe_app/profile.html')
+
 # Add to favorites view
 # User favorite recipes
 def testview(request):
