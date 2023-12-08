@@ -1,18 +1,54 @@
 <!DOCTYPE html>
-
-Hi, this is test
-<div>
-    <ul>
-        {% for recipe in recipes %}
-        <h2>{{recipe.title}}</h2>
-        
-        <img src="{{ recipe.image.url }}" width="300" height="250">
-
-        {% for ing in recipe.ingredients.all %}
-        <li>{{ing.ingredient}} {{ing.amount}} {{ing.unit}}</li>
-        {% endfor %}
-
-        {% empty %}
-        <p>No recipes</p>
-        {% endfor %}
-</div>
+<html lang="en" >
+    <head>
+        <meta name="viewport" content="width=device-width, inital-scale=1">
+        <title>title</title>
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+            <div class="container-fluid">
+            
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+    
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <p>moikka</p>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+    
+                        {% if user.is_authenticated %}
+                          <li class="nav-item">
+                            <span class="navbar-text me-2">Hello, {{ user.username }}.
+                              </span></li>
+                        {% else %}
+                          <li class="nav-item">
+                            Moikka</li>
+                          
+                        {% endif %}
+                    </ul>
+    
+                    {% if user.is_authenticated %}
+                        moro
+                    {% endif %}
+                    
+                </div>
+            </div>
+        </nav>
+        <main class="container">
+            <div class="pb-2 mb-2 border-bottom">
+                {% block page_header %}{% endblock page_header %}
+            </div>
+            <div>
+                {% block content %}{% endblock content %}
+            </div>
+    </body>
+</html>

@@ -37,10 +37,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    #additional apps
+    # additional apps
     'recipe_app',
     'accounts',
-    #default apps
+    # Third party apps
+    'bootstrap5',
+    # default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
