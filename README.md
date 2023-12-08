@@ -11,6 +11,11 @@ Additional installations:
 
 ### Pillow  
 pip install pillow  
+### Bootstrap5  
+pip install django-bootstrap-v5
+
+### Setting up virtual environment  
+pip install -r requirements.txt
 
 ## Using repository
 
