@@ -1,0 +1,6 @@
+<p>Kirjoita arvostelu</p>
+<form action="{% url 'recipe_app:new_rating' recipe.id %}" method="post">
+    {% csrf_token %}
+    {{form.as_div}}
+    <button name="submit">Lisää arvostelu</button>
+</form>

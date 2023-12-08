@@ -81,18 +81,24 @@ def edit_recipe(request, recipe_id):
 
 # Add rating view
 def add_rating(request, recipe_id):
+
     recipe = Recipe.objects.get(id=recipe_id)
+
     if request.method != 'POST':
         form = RatingForm()
     else:
         form = RatingForm(data=request.POST)
+
         if form.is_valid():
-            new_recipe = form.save(commit=False)
-            new_recipe.recipe = recipe
-            new_recipe.save()
-            return redirect('recipe_app:recipe',recipe_id=recipe_id)
-    context = {'recipe':recipe,'form':form}
-    return render(request,'recipe_app/add_rating.html',context)
+            new_rating = form.save(commit=False)
+            new_rating.recipe = recipe
+            new_rating.owner = request.user
+            new_rating.save()
+
+            return redirect('recipe_app:recipe_detail', recipe_id=recipe_id)
+
+    context = {'form': form, 'recipe': recipe}
+    return render(request, 'recipe_app/add_rating.html', context)
 
 # User profile
 def profile(request):
@@ -103,7 +109,6 @@ def profile(request):
     return render(request, 'recipe_app/profile.html')
 
 # Add to favorites view
-# User favorite recipes
 def testview(request):
     recipes = Recipe.objects.all()
     context = {'recipes': recipes}

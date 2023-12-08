@@ -31,10 +31,14 @@
         <strong>{{rating.title}}</strong>             
         <p>{{rating.comment}}</p>
         {% empty %}
-        No ratings
+        Ei arvosteluja
         {% endfor %}
     </div>
 </div>
+
+<a href="{% url 'recipe_app:new_rating' recipe.id %}">Kirjoita arvostelu</a>
+{% comment %} <a href="{% url 'recipe_app:new_rating' %}?title={{ recipe.title }}">Kirjoita arvostelu</a> {% endcomment %}
+
 
 {% comment %} JavaScript to handle the favorite button {% endcomment %}
 <script>
@@ -76,5 +80,4 @@
     
 </script>
 
-<strong style="background-color:Tomato;">Annosmäärä
-    laskuri, arvostelujen keskiarvo</strong>
+<strong style="background-color:Tomato;">Annosmäärälaskuri, arvostelujen keskiarvo</strong>

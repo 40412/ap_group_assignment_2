@@ -11,7 +11,7 @@ class RatingForm(forms.ModelForm):
     class Meta:
         model = Rating
         fields = ["title","score","comment"]
-        labels = {"title":"Title","score":"Score","comment":"Comment"}
+        labels = {"title":"Otsikko","score":"Pisteet","comment":"Teksti"}
 
 class SearchForm(forms.Form):
     query = forms.CharField()
