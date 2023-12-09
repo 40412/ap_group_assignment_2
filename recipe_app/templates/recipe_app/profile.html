@@ -10,11 +10,22 @@
 Ei suosikkeja
 {% endfor %}
 
+<h2>Omat reseptit</h2>
+
+{% for recipe in user.recipes.all %}
+<p><a href="{% url 'recipe_app:recipe_detail' recipe.id %}">
+    <img src="{{ recipe.image.url }}" alt="Kuva reseptistä" width="100" height="70"> 
+    {{ recipe.title }}</a></p>
+
+{% empty %}
+Ei omia reseptejä
+{% endfor %}
+
+<a href={% url "recipe_app:new_recipe" %}>Lisää resepti</a>
+
 <strong style="background-color:Tomato">
     Profile picture
-Edit profile picture
-add recipe
-show my recipes
+    Edit profile picture
 </strong>
 
 

@@ -4,9 +4,9 @@
     <div>
         <button class="favorite-toggle" data-recipe-id="{{ recipe.id }}">
             {% if user in recipe.favorited_by.all %}
-            Remove from Favorites
+            Poista suosikeista
             {% else %}
-            Add to Favorites
+            Lisää suosikkeihin
             {% endif %}
         </button>
     </div>
@@ -72,7 +72,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    this.textContent = this.textContent.includes('Add') ? 'Remove from Favorites' : 'Add to Favorites';
+                    this.textContent = this.textContent.includes('Lisää') ? 'Poista suosikeista' : 'Lisää suosikkeihin';
                 }
             });
         });
