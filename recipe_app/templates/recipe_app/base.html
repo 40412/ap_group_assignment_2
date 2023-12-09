@@ -30,6 +30,11 @@
             {% comment %}<a class="nav-link" href="{% url 'recipe_app:all_recipes.html' %}"> Kaikki reseptit </a></li> {% endcomment %}
             <a class="nav-link" href="{% url 'recipe_app:recipes' %}">Kaikki reseptit</a></li>
 
+        </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'recipe_app:new_recipe' %}">Lisää resepti </a></li>
+
         </ul> <!--End of links on left side of navbar ( og: books(above))-->
 
         <!-- Account related links -->

@@ -82,7 +82,6 @@ def add_recipe(request):
             return redirect('recipe_app:profile') #redirect to appropriate url
     context = {'form':recipe_form, 'ingform':ingredient_formset}
     return render(request,'recipe_app/add_recipe.html',context)
-
 # Edit recipe view
 def edit_recipe(request, recipe_id):
     #EDIT INGREDIENTS WHERE?
