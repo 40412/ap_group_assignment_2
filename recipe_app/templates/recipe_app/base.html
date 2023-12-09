@@ -4,10 +4,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Crazy Book Club </title>
+  <title> MestariKokit </title>
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -42,27 +44,24 @@
 
           {% if user.is_authenticated %}
             <li class="nav-item">
-              <span class="nav-text">Hei,
-                <a class="nav-link" href="{% url 'recipe_app:profile' %}">
-                  {{ user.username }}.
-                </a>
+              <span class="navbar-text me-2"> Hei, 
+                <a href="{% url 'recipe_app:profile' %}"> {{ user.username }}.</a>
               </span>
+            </li>
+            <form action="{% url 'accounts:logout' %}" method='post'>
+              {% csrf_token %}
+              <button name='submit' class='btn btn-outline-secondary btn-sm'>
+                Kirjaudu ulos</button>
+            </form>
           {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'accounts:register' %}">
-                  Register</a></li>
+                  Rekisteröidy</a></li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'accounts:login' %}">
-                  Log in</a></li>
+                  Kirjaudu Sisään</a></li>
           {% endif %}
         </ul> <!-- End of account-related links -->
-        {% if user.is_authenticated %}
-          <form action="{% url 'accounts:logout' %}" method='post'>
-            {% csrf_token %}
-            <button name='submit' class='btn btn-outline-secondary btn-sm'>
-              Log out</button>
-          </form>
-        {% endif %}
 
       </div> <!-- Closes collapsible parts of navbar-->
     </div> <!-- Closes collapsible parts of navbar -->
