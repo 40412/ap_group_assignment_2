@@ -42,8 +42,11 @@
 
           {% if user.is_authenticated %}
             <li class="nav-item">
-              <span class="navbar-text me-2"> Hei, {{ user.username }}.
-                </span></li>
+              <span class="nav-text">Hei,
+                <a class="nav-link" href="{% url 'recipe_app:profile' %}">
+                  {{ user.username }}.
+                </a>
+              </span>
           {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'accounts:register' %}">
