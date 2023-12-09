@@ -1,3 +1,13 @@
+{% extends "recipe_app/base.html" %}
+
+{% load static %}
+
+<link
+ rel="stylesheet"
+ type="text/css"
+ href="{% static 'accounts/css/bootstrap.css' %}"
+/>
+
 <div>
     <a href="{% url 'recipe_app:index' %}">MestariKokit</a>
     <a href="{% url 'recipe_app:recipes' %}">Reseptit</a>
