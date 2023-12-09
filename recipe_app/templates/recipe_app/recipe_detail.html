@@ -1,4 +1,4 @@
-<h2>{{recipe.title}}</h2>
+<h2>{{ recipe.title }}</h2>
 <img src="{{ recipe.image.url }}" width="300" height="250">
 <div>
     <div>
@@ -11,10 +11,11 @@
         </button>
     </div>
 
+    <p>Annoksia: {{ recipe.portions }}</p>
     <h3>Raaka-aineet</h3>
     <ul>
         {% for ingredient in recipe.ingredients.all %}
-        <li>{{ingredient}}</li>
+        <li>{{ ingredient }}</li>
         {% empty %}
         Ei raaka-aineita
         {% endfor %}
@@ -22,14 +23,16 @@
 </div>
 <div>
     <h3>Valmistusohjeet</h3>
-    {{recipe.instructions}}
+    {{ recipe.instructions }}
 
     <h3>Arvostelut</h3>
+    <p>Arvostelujen keskiarvo: {{ average }}</p>
     {% for rating in recipe.ratings.all %}
     <div>
-        <p>{{rating.score}}</p>
-        <strong>{{rating.title}}</strong>             
-        <p>{{rating.comment}}</p>
+        
+        <strong>{{ rating.title }}</strong>    
+        <p>Arvosana {{ rating.score }}</p>      
+        <p>{{ rating.comment }}</p>
         {% empty %}
         Ei arvosteluja
         {% endfor %}
@@ -37,8 +40,6 @@
 </div>
 
 <a href="{% url 'recipe_app:new_rating' recipe.id %}">Kirjoita arvostelu</a>
-{% comment %} <a href="{% url 'recipe_app:new_rating' %}?title={{ recipe.title }}">Kirjoita arvostelu</a> {% endcomment %}
-
 
 {% comment %} JavaScript to handle the favorite button {% endcomment %}
 <script>

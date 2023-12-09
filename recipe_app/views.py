@@ -1,10 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Recipe, Ingredients, Favorites, Rating
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from .forms import RecipeForm, RatingForm, SearchForm, IngredientForm
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
 from django.forms import formset_factory
 
 
@@ -30,6 +28,13 @@ def recipes(request): # + sort type
 # Detailed recipe view
 def recipe_detail(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
+    num_of_ratings = recipe.ratings.all().count()
+    rating_sum = 0
+
+    for rating in recipe.ratings.all():
+        rating_sum += rating.score
+
+    average = rating_sum / num_of_ratings
 
     ingredients = recipe.ingredients.all()
     ratings = recipe.ratings.all()
@@ -37,7 +42,8 @@ def recipe_detail(request, recipe_id):
     context = {'recipe':recipe, 
                'ingredients':ingredients, 
                'ratings':ratings, 
-               'instructions': instructions}
+               'instructions': instructions,
+               'average': average}
     return render(request, 'recipe_app/recipe_detail.html', context)
 
 # Handles the favorite button toggle
