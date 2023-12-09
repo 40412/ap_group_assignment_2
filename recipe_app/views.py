@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Recipe, Ingredients, Favorites, Rating
 from django.http import Http404
-from .forms import RecipeForm, RatingForm, SearchForm
+from .forms import RecipeForm, RatingForm, SearchForm, IngredientForm
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from django.forms import formset_factory
 
 
 # Create your views here.
@@ -52,16 +53,28 @@ def toggle_favorite(request, recipe_id):
 
 # Add recipe view
 def add_recipe(request):
+    IngredientFormSet = formset_factory(IngredientForm, extra=7)
     if request.method != 'POST':
         recipe_form = RecipeForm()
+        ingredient_formset = IngredientFormSet()
     else:
-        recipe_form = RecipeForm(data=request.POST)
-        if recipe_form.is_valid():
+        recipe_form = RecipeForm(request.POST, request.FILES)
+        ingredient_formset = IngredientFormSet(data=request.POST)
+        print(recipe_form.is_valid())
+        print(ingredient_formset.is_valid())
+        if recipe_form.is_valid() and ingredient_formset.is_valid():
             new_recipe = recipe_form.save(commit=False)
             new_recipe.owner = request.user
             new_recipe.save()
-            return redirect('') #redirect to appropriate url
-    context = {'form':recipe_form}
+            
+            for ingredient in  ingredient_formset:
+                if ingredient.has_changed():
+                    ingredient = ingredient.save(commit=False)
+                    ingredient.recipe = new_recipe
+                    ingredient.save()
+
+            return redirect('recipe_app:profile') #redirect to appropriate url
+    context = {'form':recipe_form, 'ingform':ingredient_formset}
     return render(request,'recipe_app/add_recipe.html',context)
 
 # Edit recipe view
@@ -109,6 +122,8 @@ def profile(request):
     return render(request, 'recipe_app/profile.html')
 
 # Add to favorites view
+
+
 def testview(request):
     recipes = Recipe.objects.all()
     context = {'recipes': recipes}

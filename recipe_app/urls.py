@@ -12,5 +12,6 @@ urlpatterns = [
     path('user/', views.profile, name='profile'),
     path('toggle-favorite/<int:recipe_id>/', views.toggle_favorite, name='toggle-favorite'),
     path('new-rating/<int:recipe_id>/', views.add_rating, name='new_rating'),
+    path('new-recipe/', views.add_recipe, name='new_recipe'),
     path('testing/', views.testview, name='test'),
 ]
