@@ -1,0 +1,10 @@
+<form action="{% url 'recipe_app:new_recipe' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_div }}
+    {{ ingform.management_form }}  <!-- Include the management form -->
+    {% for f in ingform %}
+        {{ f.as_p }}
+    {% endfor %}
+    <input type="submit" value="Lisää resepti">
+</form>
+<a href={% url 'recipe_app:profile' %}>Takaisin</a>

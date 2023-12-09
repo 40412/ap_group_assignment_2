@@ -37,9 +37,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    #additional apps
+    # additional apps
     'recipe_app',
-    #default apps
+    'accounts',
+    # Third party apps
+    'bootstrap5',
+    # default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -130,3 +133,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'recipe_app:index'
+LOGOUT_REDIRECT_URL = 'recipe_app:index'

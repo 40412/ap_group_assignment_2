@@ -1,10 +1,21 @@
-<h2>{{recipe.title}}</h2>
+<h2>{{ recipe.title }}</h2>
 <img src="{{ recipe.image.url }}" width="300" height="250">
 <div>
+    <div>
+        <button class="favorite-toggle" data-recipe-id="{{ recipe.id }}">
+            {% if user in recipe.favorited_by.all %}
+            Poista suosikeista
+            {% else %}
+            Lisää suosikkeihin
+            {% endif %}
+        </button>
+    </div>
+
+    <p>Annoksia: {{ recipe.portions }}</p>
     <h3>Raaka-aineet</h3>
     <ul>
-        {% for ingredient in recipe.ingredients.all%}
-        <li>{{ingredient}}</li>
+        {% for ingredient in recipe.ingredients.all %}
+        <li>{{ ingredient }}</li>
         {% empty %}
         Ei raaka-aineita
         {% endfor %}
@@ -12,16 +23,62 @@
 </div>
 <div>
     <h3>Valmistusohjeet</h3>
-    {{recipe.instructions}}
+    {{ recipe.instructions }}
 
     <h3>Arvostelut</h3>
+    <p>Arvostelujen keskiarvo: {{ average }}</p>
     {% for rating in recipe.ratings.all %}
     <div>
-        <p>{{rating.score}}</p>
-        <strong>{{rating.title}}</strong>             
-        <p>{{rating.comment}}</p>
+        
+        <strong>{{ rating.title }}</strong>    
+        <p>Arvosana {{ rating.score }}</p>      
+        <p>{{ rating.comment }}</p>
         {% empty %}
-        No ratings
+        Ei arvosteluja
         {% endfor %}
     </div>
 </div>
+
+<a href="{% url 'recipe_app:new_rating' recipe.id %}">Kirjoita arvostelu</a>
+
+{% comment %} JavaScript to handle the favorite button {% endcomment %}
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    document.querySelectorAll('.favorite-toggle').forEach(button => {
+        button.addEventListener('click', function() {
+            const recipeId = this.dataset.recipeId;
+            fetch(`/toggle-favorite/${recipeId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'), 
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({'recipe_id': recipeId})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.textContent = this.textContent.includes('Lisää') ? 'Poista suosikeista' : 'Lisää suosikkeihin';
+                }
+            });
+        });
+    });
+    
+</script>
+
+<strong style="background-color:Tomato;">Annosmäärälaskuri, arvostelujen keskiarvo</strong>
