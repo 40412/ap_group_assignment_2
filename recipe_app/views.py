@@ -10,12 +10,13 @@ from django.forms import formset_factory, inlineformset_factory
 # Main page
 def index(request):
     form = SearchForm(request.GET)
+    recipes = Recipe.objects.all()
     if form.is_valid():
         query = form.cleaned_data['query']
         results = Recipe.objects.filter(title__icontains=query)
     else:
         results = Recipe.objects.none()
-    context = {'form': form, 'results': results}
+    context = {'form': form, 'results': results, 'recipes':recipes}
     return render(request, 'recipe_app/index.html', context)
 
 # Display all recipes
