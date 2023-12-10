@@ -31,7 +31,8 @@
     <div class="row justify-content-center py-5">
         <div class="col-12 col-md-8 col-lg-6">
             {% for result in results %}
-            <p>{{ result.title }}</p>
+            <a href="{% url 'recipe_app:recipe_detail' result.id %}">
+            <p>{{ result.title }}</p></a>
             {% endfor %}
         </div>
     </div>

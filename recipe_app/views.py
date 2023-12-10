@@ -50,6 +50,7 @@ def recipe_detail(request, recipe_id):
     return render(request, 'recipe_app/recipe_detail.html', context)
 
 # Handles the favorite button toggle
+@login_required
 def toggle_favorite(request, recipe_id):
     if request.user.is_authenticated:
         recipe = get_object_or_404(Recipe, id=recipe_id)
@@ -61,6 +62,7 @@ def toggle_favorite(request, recipe_id):
     return JsonResponse({'success': False})
 
 # Add recipe view
+@login_required
 def add_recipe(request):
     IngredientFormSet = formset_factory(IngredientForm, extra=7)
     if request.method != 'POST':
@@ -87,6 +89,7 @@ def add_recipe(request):
     return render(request,'recipe_app/add_recipe.html',context)
 
 # Edit recipe view
+@login_required
 def edit_recipe(request, recipe_id):
     
     recipe = get_object_or_404(Recipe, id=recipe_id)
@@ -110,6 +113,7 @@ def edit_recipe(request, recipe_id):
     return render(request, 'recipe_app/edit_recipe.html', context)
 
 # Delete recipe view
+@login_required
 def delete_recipe(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     check_owner(recipe.owner, request.user)
@@ -122,6 +126,7 @@ def delete_recipe(request, recipe_id):
     return render(request, 'recipe_app/confirm_deletion.html', context)
 
 # Add rating view
+@login_required
 def add_rating(request, recipe_id):
 
     recipe = Recipe.objects.get(id=recipe_id)
@@ -143,6 +148,7 @@ def add_rating(request, recipe_id):
     return render(request, 'recipe_app/add_rating.html', context)
 
 # User profile
+@login_required
 def profile(request):
     user = request.user
     favorites = user.favorites.all()
