@@ -8,7 +8,7 @@
  href="{% static 'accounts/css/bootstrap.css' %}"
 />
 
-<div>
+{% comment %} <div>
     <a href="{% url 'recipe_app:index' %}">MestariKokit</a>
     <a href="{% url 'recipe_app:recipes' %}">Reseptit</a>
 
@@ -23,15 +23,29 @@
     <a href="{% url 'accounts:login' %}">Kirjaudu</a>
     <a href="{% url 'accounts:register' %}">Rekisteröidy</a>
     {% endif %}
+</div> {% endcomment %}
+{% block page_header %}
+<h1 class="pb-5">Tervetuloa kokeilemaan maailman parhaita reseptejä!</h1>
+{% endblock page_header %}
+
+{% block  content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <form class="col-12 col-md-8 col-lg-6" method="get" action="{% url 'recipe_app:index' %}">
+            {{ form.query }}
+            <button type="submit"><i class="bi bi-search"></i></button>
+        </form>
+    </div>
+    <div class="row justify-content-center py-5">
+        <div class="col-12 col-md-8 col-lg-6">
+            {% for result in results %}
+            <p>{{ result.title }}</p>
+            {% endfor %}
+        </div>
+    </div>
 </div>
-<h1>Tervetuloa kokeilemaan maailman parhaita reseptejä!</h1>
 
-<form method="get" action="{% url 'recipe_app:index' %}">
-    {{ form.query }}
-    <button type="submit">Etsi reseptejä</button>
-</form>
 
-{% for result in results %}
-    <p>{{ result.title }}</p>
-{% endfor %}
 <strong style="background-color:Tomato;"> Linkit hakutuloksiin</strong>
+{% endblock content %}
