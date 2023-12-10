@@ -7,6 +7,7 @@
     <p>Oletko varma että haluat poistaa reseptin "{{ recipe.title }}"?</p>
     <form method="post" action="{% url 'recipe_app:delete_recipe' recipe.id %}">
         {% csrf_token %}
-        <input type="submit" value="Poista">
+        <button type="submit" class="btn btn-danger">Poista</button>
+        <a href="{% url 'recipe_app:profile' %}" class="btn btn-outline-secondary">Peruuta</a>
     </form>
 {% endblock content %}
