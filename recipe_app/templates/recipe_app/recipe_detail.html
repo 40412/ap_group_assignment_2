@@ -4,10 +4,10 @@
 {% endblock page_header %}
 {% block content %}
     <img src="{{ recipe.image.url }}" width="300" height="250">
-    <div>"300" height="250">
+    <div"300" height="250">
         <div>
-            <div>
-                <button class="favorite-toggle" data-recipe-id="{{ recipe.id }}">
+            <div class="py-3">
+                <button class="favorite-toggle" style="background-color: lightgreen" data-recipe-id="{{ recipe.id }}">
                     {% if user in recipe.favorited_by.all %}
                     Poista suosikeista
                     {% else %}
@@ -16,37 +16,44 @@
                 </button>
             </div>
         
-            <p>Annoksia: {{ recipe.portions }}</p>
-            <h3>Raaka-aineet</h3>
-            <ul>
-                {% for ingredient in recipe.ingredients.all %}
-                <li>{{ ingredient }}</li>
-                {% empty %}
-                Ei raaka-aineita
-                {% endfor %}
-            </ul>
+            <p class="pt-3">Annoksia: {{ recipe.portions }}</p>
+            <div class="px-1 my-5 col-md-6 border border-dark" style="background-color: lightgreen">
+                <h3>Raaka-aineet</h3>
+                <ul>
+                    {% for ingredient in recipe.ingredients.all %}
+                    <li>{{ ingredient }}</li>
+                    {% empty %}
+                    Ei raaka-aineita
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-        <div>
+        <div class="px-1 my-5 col-md-6 border border-dark" style="background-color: lightgreen">
             <h3>Valmistusohjeet</h3>
             {{ recipe.instructions }}
-        
+        </div>
+        <div class="px-1 my-5 col-md-6 border border-dark" style="background-color: lightgreen" width="50vh">
             <h3>Arvostelut</h3>
             {% if num_of_ratings != 0 %}
                 <p>Arvostelujen keskiarvo: {{ average }}</p>
             {% endif %}
             {% for rating in recipe.ratings.all %}
+
             <div>
+                <div class="px-1 border border-dark my-1">
+                    <strong>{{ rating.title }}</strong>    
+                    <p>Arvosana {{ rating.score }}</p>      
+                    <p>{{ rating.comment }}</p>
+                    <p>Käyttäjä: {{ rating.owner }} </p>
+                </div>
                 
-                <strong>{{ rating.title }}</strong>    
-                <p>Arvosana {{ rating.score }}</p>      
-                <p>{{ rating.comment }}</p>
                 {% empty %}
                     Ei arvosteluja
                 {% endfor %}
             </div>
         </div>
         
-    <a href="{% url 'recipe_app:new_rating' recipe.id %}">Kirjoita arvostelu</a>
+    <a href="{% url 'recipe_app:new_rating' recipe.id %}" class="btn border border-dark" style="background-color:lightgray">Kirjoita arvostelu</a>
 
     {% comment %} JavaScript to handle the favorite button {% endcomment %}
     <script>
@@ -87,6 +94,4 @@
         });
         
     </script>
-
-    <strong style="background-color:Tomato;">Annosmäärälaskuri, arvostelujen keskiarvo</strong>
 {% endblock content %}
