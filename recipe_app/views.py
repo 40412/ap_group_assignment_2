@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Recipe, Ingredients, Favorites, Rating
 from django.http import Http404, JsonResponse
 from .forms import RecipeForm, RatingForm, SearchForm, IngredientForm
-from django.forms import formset_factory
+from django.forms import formset_factory, inlineformset_factory
 
 
 # Create your views here.
@@ -79,23 +79,31 @@ def add_recipe(request):
                     ingredient.recipe = new_recipe
                     ingredient.save()
 
-            return redirect('recipe_app:profile') #redirect to appropriate url
+            return redirect('recipe_app:profile')
     context = {'form':recipe_form, 'ingform':ingredient_formset}
     return render(request,'recipe_app/add_recipe.html',context)
+
 # Edit recipe view
 def edit_recipe(request, recipe_id):
-    #EDIT INGREDIENTS WHERE?
+    
+    recipe = get_object_or_404(Recipe, id=recipe_id)
     check_owner(recipe.owner, request.user)
-    recipe = Recipe.objects.get(id=recipe_id)
-    if request.method != 'POST':
-        form = RecipeForm(instance = recipe)
+    IngredientFormSet = inlineformset_factory(Recipe, Ingredients, form=IngredientForm, extra=7, can_delete=False)
+
+    if request.method == 'POST':
+        recipe_form = RecipeForm(request.POST, request.FILES, instance=recipe)
+        ingredient_formset = IngredientFormSet(request.POST, instance=recipe)
+
+        if recipe_form.is_valid() and ingredient_formset.is_valid():
+            updated_recipe = recipe_form.save()
+            ingredient_formset.save()
+            return redirect('recipe_app:profile')
     else:
-        form = RecipeForm(instance = recipe, data=request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('') #redirect to appropriate url
-    context = {'recipe':recipe, 'form':form}
-    return render(request,'recipe_app/edit_recipe.html',context)
+        recipe_form = RecipeForm(instance=recipe)
+        ingredient_formset = IngredientFormSet(instance=recipe)
+
+    context = {'form': recipe_form, 'ingform': ingredient_formset, 'recipe': recipe}
+    return render(request, 'recipe_app/edit_recipe.html', context)
 
 # Add rating view
 def add_rating(request, recipe_id):

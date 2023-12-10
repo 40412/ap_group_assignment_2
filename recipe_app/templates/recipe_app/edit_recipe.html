@@ -1,0 +1,21 @@
+{% extends 'recipe_app/base.html' %}
+{% block page_header %}
+    <h1>Muokkaa reseptiä</h1>
+{% endblock page_header %}
+
+{% block content %}
+    <form id="recipeForm" action="{% url 'recipe_app:edit_recipe' recipe.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.as_p }}
+        </div>
+        {{ ingform.management_form }}
+        <div id="ingredient-formset" class="mb-3">
+            {% for f in ingform %}
+                {{ f.as_p }}
+            {% endfor %}
+        </div>
+        <input type="submit" class="btn btn-primary" value="Tallenna muutokset">
+    </form>
+    <a href="{% url 'recipe_app:profile' %}" class="btn btn-outline-secondary mt-3">Takaisin</a>
+{% endblock content %}

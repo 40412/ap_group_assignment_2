@@ -17,9 +17,13 @@ Ei suosikkeja
 <h2>Omat reseptit</h2>
 
 {% for recipe in user.recipes.all %}
-<p><a href="{% url 'recipe_app:recipe_detail' recipe.id %}">
-    <img src="{{ recipe.image.url }}" alt="Kuva reseptistä" width="100" height="70"> 
-    {{ recipe.title }}</a></p>
+<p>
+    <a href="{% url 'recipe_app:recipe_detail' recipe.id %}">
+        <img src="{{ recipe.image.url }}" alt="Kuva reseptistä" width="100" height="70"> 
+        {{ recipe.title }}
+    </a>
+    <a href="{% url 'recipe_app:edit_recipe' recipe.id %}">Muokkaa reseptiä</a>
+</p>
 
 {% empty %}
 Ei omia reseptejä
