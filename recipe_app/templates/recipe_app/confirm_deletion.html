@@ -1,0 +1,12 @@
+{% extends 'recipe_app/base.html' %}
+{% block page_header %}
+    <h1>Varmistus</h1>
+{% endblock page_header %}
+
+{% block content %}
+    <p>Oletko varma että haluat poistaa reseptin "{{ recipe.title }}"?</p>
+    <form method="post" action="{% url 'recipe_app:delete_recipe' recipe.id %}">
+        {% csrf_token %}
+        <input type="submit" value="Poista">
+    </form>
+{% endblock content %}

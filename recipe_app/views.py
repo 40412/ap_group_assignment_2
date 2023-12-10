@@ -109,6 +109,18 @@ def edit_recipe(request, recipe_id):
     context = {'form': recipe_form, 'ingform': ingredient_formset, 'recipe': recipe}
     return render(request, 'recipe_app/edit_recipe.html', context)
 
+# Delete recipe view
+def delete_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    check_owner(recipe.owner, request.user)
+
+    if request.method == 'POST':
+        recipe.ingredients.all().delete()
+        recipe.delete()
+        return redirect('recipe_app:profile')
+    context = {'recipe': recipe}
+    return render(request, 'recipe_app/confirm_deletion.html', context)
+
 # Add rating view
 def add_rating(request, recipe_id):
 

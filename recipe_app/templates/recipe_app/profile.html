@@ -23,6 +23,7 @@ Ei suosikkeja
         {{ recipe.title }}
     </a>
     <a href="{% url 'recipe_app:edit_recipe' recipe.id %}">Muokkaa reseptiä</a>
+    <a href="{% url 'recipe_app:delete_recipe' recipe.id %}">Poista resepti</a>
 </p>
 
 {% empty %}
