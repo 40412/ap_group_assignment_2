@@ -5,7 +5,6 @@ from django.http import Http404, JsonResponse
 from .forms import RecipeForm, RatingForm, SearchForm, IngredientForm
 from django.forms import formset_factory, inlineformset_factory
 
-
 # Create your views here.
 
 # Main page
@@ -41,12 +40,14 @@ def recipe_detail(request, recipe_id):
     ingredients = recipe.ingredients.all()
     ratings = recipe.ratings.all()
     instructions = recipe.instructions
+    user = request.user
     context = {'recipe':recipe, 
                'ingredients':ingredients, 
                'ratings':ratings, 
                'instructions': instructions,
                'average': average,
-               'num_of_ratings':num_of_ratings}
+               'num_of_ratings':num_of_ratings,
+               'user': user}
     return render(request, 'recipe_app/recipe_detail.html', context)
 
 # Handles the favorite button toggle
@@ -122,7 +123,21 @@ def delete_recipe(request, recipe_id):
         recipe.ingredients.all().delete()
         recipe.delete()
         return redirect('recipe_app:profile')
-    context = {'recipe': recipe}
+    context = {'recipe': recipe, 'model': 'Recipe'}
+    return render(request, 'recipe_app/confirm_deletion.html', context)
+
+# Delete rating
+def delete_rating(request, rating_id):
+    rating = get_object_or_404(Rating, id=rating_id)
+    recipe = rating.recipe
+    user = request.user
+    check_owner(rating.owner, request.user)
+
+    if request.method == 'POST':
+        rating.delete()
+        return redirect('recipe_app:recipe_detail', recipe.id)
+    
+    context = {'rating': rating, 'recipe': recipe, 'user': user, 'model': 'Rating'}
     return render(request, 'recipe_app/confirm_deletion.html', context)
 
 # Add rating view
@@ -155,9 +170,6 @@ def profile(request):
     form = RecipeForm()
     context = {'user': user, 'favorites': favorites}
     return render(request, 'recipe_app/profile.html')
-
-# Add to favorites view
-
 
 def testview(request):
     recipes = Recipe.objects.all()

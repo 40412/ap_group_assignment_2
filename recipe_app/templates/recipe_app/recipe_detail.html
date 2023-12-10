@@ -45,6 +45,9 @@
                     <p>Arvosana {{ rating.score }}</p>      
                     <p>{{ rating.comment }}</p>
                     <p>Käyttäjä: {{ rating.owner }} </p>
+                    {% if rating.owner == user %}
+                    <a href="{% url 'recipe_app:delete_rating' rating.id %}" class="btn border border-dark" style="background-color:lightgray">Poista</a>
+                    {% endif %}
                 </div>
                 
                 {% empty %}

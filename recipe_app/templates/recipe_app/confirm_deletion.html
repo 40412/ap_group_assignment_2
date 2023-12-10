@@ -4,10 +4,23 @@
 {% endblock page_header %}
 
 {% block content %}
+
+    {% if model == 'Recipe' %}
+    
     <p>Oletko varma että haluat poistaa reseptin "{{ recipe.title }}"?</p>
     <form method="post" action="{% url 'recipe_app:delete_recipe' recipe.id %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Poista</button>
         <a href="{% url 'recipe_app:profile' %}" class="btn btn-outline-secondary">Peruuta</a>
     </form>
+
+    {% elif model == 'Rating' %}
+
+    <p>Oletko varma että haluat poistaa arvostelun?</p>
+    <form method="post" action="{% url 'recipe_app:delete_rating' rating.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Poista</button>
+        <a href="{% url 'recipe_app:recipe_detail' recipe.id %}" class="btn btn-outline-secondary">Peruuta</a>
+    </form>
+    {% endif %}
 {% endblock content %}
