@@ -1,29 +1,50 @@
 {% extends 'recipe_app/base.html' %}
+{% csrf_token %}
 {% block page_header %}
     <h1 class="text-center">Kaikki reseptit</h1>
 {% endblock page_header %}
 {% block content %}
-    <div>
-        <ul>
-            {% for recipe in recipes %}
-            <a href='{{ recipe.id }}'>
-            <h2>{{recipe.title}}</h2>
-                
-            <img src="{{ recipe.image.url }}" width="200" height="150"></a>
-
-            <button class="favorite-toggle" data-recipe-id="{{ recipe.id }}">
-                {% if user in recipe.favorited_by.all %}
-                Poista suosikeista
-                {% else %}
-                Lisää suosikkeihin
-                {% endif %}
-            </button>
-
-            {% empty %}
-            <p>No recipes</p>
-            {% endfor %}
-        </ul>
+   
+<div class="container py-5">
+    <div class="row">
+        {% for recipe in recipes %}
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card">
+                <a href='{{ recipe.id }}'>
+                    <h2>{{recipe.title}}</h2>
+                    <img src="{{ recipe.image.url }}" width="200" height="180" class="card-img-top" alt="{{ recipe.title }}">
+                </a>
+                <div class="card-footer">
+                    <button class="favorite-toggle btn btn-primary btn-add-to-favorites" data-recipe-id="{{ recipe.id }}">
+                        {% if user in recipe.favorited_by.all %}
+                        Poista suosikeista
+                        {% else %}
+                        Lisää suosikkeihin
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="col-12">No recipes</p>
+        {% endfor %}
     </div>
+</div>
+
+<style>
+    .btn-add-to-favorites {
+        background-color: red;
+        border-color: red;
+        color: white;
+    }
+    .btn-add-to-favorites:hover {
+        background-color: rgb(126, 52, 52); 
+        border-color:  rgb(126, 52, 52); 
+        color: white; 
+    }
+
+
+</style>
 
     {% comment %} JavaScript to handle the favorite button {% endcomment %}
     <script>
