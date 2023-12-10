@@ -30,11 +30,13 @@ def recipe_detail(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
     num_of_ratings = recipe.ratings.all().count()
     rating_sum = 0
+    if num_of_ratings != 0:
+        for rating in recipe.ratings.all():
+            rating_sum += rating.score
 
-    for rating in recipe.ratings.all():
-        rating_sum += rating.score
-
-    average = rating_sum / num_of_ratings
+        average = rating_sum / num_of_ratings
+    else:
+        average = 0
 
     ingredients = recipe.ingredients.all()
     ratings = recipe.ratings.all()
@@ -43,7 +45,8 @@ def recipe_detail(request, recipe_id):
                'ingredients':ingredients, 
                'ratings':ratings, 
                'instructions': instructions,
-               'average': average}
+               'average': average,
+               'num_of_ratings':num_of_ratings}
     return render(request, 'recipe_app/recipe_detail.html', context)
 
 # Handles the favorite button toggle

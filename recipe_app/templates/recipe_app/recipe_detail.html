@@ -31,7 +31,9 @@
             {{ recipe.instructions }}
         
             <h3>Arvostelut</h3>
-            <p>Arvostelujen keskiarvo: {{ average }}</p>
+            {% if num_of_ratings != 0 %}
+                <p>Arvostelujen keskiarvo: {{ average }}</p>
+            {% endif %}
             {% for rating in recipe.ratings.all %}
             <div>
                 
@@ -39,7 +41,7 @@
                 <p>Arvosana {{ rating.score }}</p>      
                 <p>{{ rating.comment }}</p>
                 {% empty %}
-                Ei arvosteluja
+                    Ei arvosteluja
                 {% endfor %}
             </div>
         </div>
