@@ -88,7 +88,8 @@ def edit_recipe(request, recipe_id):
     
     recipe = get_object_or_404(Recipe, id=recipe_id)
     check_owner(recipe.owner, request.user)
-    IngredientFormSet = inlineformset_factory(Recipe, Ingredients, form=IngredientForm, extra=7, can_delete=False)
+
+    IngredientFormSet = inlineformset_factory(Recipe, Ingredients, form=IngredientForm, extra=7, can_delete=True)
 
     if request.method == 'POST':
         recipe_form = RecipeForm(request.POST, request.FILES, instance=recipe)
