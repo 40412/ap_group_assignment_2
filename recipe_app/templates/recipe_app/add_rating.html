@@ -1,6 +1,15 @@
-<p>Kirjoita arvostelu</p>
+{% extends 'recipe_app/base.html' %}
+{% load bootstrap5 %}
+
+{% block page_header %}
+    <h2>Kirjoita arvostelu.</h2>
+{% endblock page_header %}
+
+{% block content %}
+
 <form action="{% url 'recipe_app:new_rating' recipe.id %}" method="post">
     {% csrf_token %}
     {{form.as_div}}
     <button name="submit">Lisää arvostelu</button>
 </form>
+{% endblock content %}

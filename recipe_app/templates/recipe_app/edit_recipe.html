@@ -12,7 +12,9 @@
         {{ ingform.management_form }}
         <div id="ingredient-formset" class="mb-3">
             {% for f in ingform %}
+            <div class="border border-dark my-2 mx-2 py-2 px-2">
                 {{ f.as_p }}
+            </div>
             {% endfor %}
         </div>
         <input type="submit" class="btn btn-primary" value="Tallenna muutokset">

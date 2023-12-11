@@ -1,6 +1,15 @@
+{% extends 'recipe_app/base.html' %}
+{% load bootstrap5 %}
+
+{% block page_header %}
+    <h2>Rekisteröidy</h2>
+{% endblock page_header %}
+
+{% block content %}
 <form action="{% url 'accounts:register' %}" method='post'>
     {% csrf_token %}
     {{register_form.as_div}}
 
-    <button name='submit'>Register</button>
+    <button name='submit'>Rekisteröidy</button>
 </form>
+{% endblock content %}
